@@ -18,6 +18,7 @@ public abstract class AbstractGeneratorFactory<R, T extends ExprGenerator<R>> {
     }
 
     public R eval(ExprNode node, Map<String, Object> env) {
+        node.validate();
         if (node instanceof RelationNode) {
             return evalRelation((RelationNode) node, env);
         } else if (node instanceof OperationNode) {

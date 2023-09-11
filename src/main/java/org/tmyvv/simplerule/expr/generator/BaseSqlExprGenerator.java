@@ -19,7 +19,7 @@ public class BaseSqlExprGenerator implements ExprGenerator<String> {
     protected static final MessageFormat NEQ = new MessageFormat("{0} != {1}");
     protected static final MessageFormat IS_NULL = new MessageFormat("{0} is null");
     protected static final MessageFormat NOT_NULL = new MessageFormat("{0} is not null");
-    protected static final MessageFormat EMPTY = new MessageFormat("{0} = '''");
+    protected static final MessageFormat EMPTY = new MessageFormat("{0} = ''''");
     protected static final MessageFormat NOT_EMPTY = new MessageFormat("{0} != ''''");
     protected static final MessageFormat GT = new MessageFormat("{0} > {1}");
     protected static final MessageFormat GTE = new MessageFormat("{0} >= {1}");

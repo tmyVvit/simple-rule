@@ -1,12 +1,14 @@
 package org.tmyvv.simplerule.expr.node;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.tmyvv.simplerule.expr.enums.RelationEnum;
 
 import java.util.List;
 
 @Getter
+@Setter
 public class RelationNode implements ExprNode {
 
     private RelationEnum relation;

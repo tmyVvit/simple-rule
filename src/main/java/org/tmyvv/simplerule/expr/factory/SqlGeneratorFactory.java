@@ -2,6 +2,7 @@ package org.tmyvv.simplerule.expr.factory;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.tmyvv.simplerule.expr.enums.DataTypeEnum;
+import org.tmyvv.simplerule.expr.function.ExprFunction;
 import org.tmyvv.simplerule.expr.generator.BaseSqlExprGenerator;
 import org.tmyvv.simplerule.expr.generator.BooleanSqlExprGenerator;
 import org.tmyvv.simplerule.expr.generator.StringSqlExprGenerator;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class SqlGeneratorFactory extends AbstractGeneratorFactory<String, BaseSqlExprGenerator> {
 
-    private static final SqlGeneratorFactory INSTANCE = new SqlGeneratorFactory();
+    public static final SqlGeneratorFactory INSTANCE = new SqlGeneratorFactory();
     private static final Map<DataTypeEnum, BaseSqlExprGenerator> GENERATOR_MAP = new HashMap<>();
     private static final BaseSqlExprGenerator DEFAULT = new BaseSqlExprGenerator();
 
@@ -42,15 +43,20 @@ public class SqlGeneratorFactory extends AbstractGeneratorFactory<String, BaseSq
 
     @Override
     String not(Map<String, Object> env, List<String> rs) {
-        return FormatUtil.PARENTHESIS_FORMAT.format(or(env, rs));
+        return FormatUtil.PARENTHESIS_FORMAT.format(and(env, rs));
     }
 
     @Override
     void applyFunc(OperationNode node, Map<String, Object> env) {
-        if (node.getFunc() != null) {
-            String funcResult = FunctionFactory.get(node.getFunc()).sqlApply(node.getLeft(), node.getRight(), env);
-            node.setLeft(funcResult);
+        if (node.getFunc() == null) {
+            return;
         }
+        ExprFunction func = FunctionFactory.get(node.getFunc());
+        if (func == null) {
+            throw new IllegalArgumentException("function not found: " + node.getFunc());
+        }
+        String funcResult = func.sqlApply(node.getLeft(), node.getRight(), env);
+        node.setLeft(funcResult);
     }
 
     @Override

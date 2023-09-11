@@ -1,5 +1,6 @@
 package org.tmyvv.simplerule.expr.factory;
 
+import org.tmyvv.simplerule.expr.function.BirthdayFunction;
 import org.tmyvv.simplerule.expr.function.ExprFunction;
 
 import java.util.Map;
@@ -10,7 +11,7 @@ public class FunctionFactory {
     private static final Map<String, ExprFunction> FUNC = new ConcurrentHashMap<>();
 
     static {
-//        register();
+        register(new BirthdayFunction());
     }
 
     public static void register(ExprFunction function) {
