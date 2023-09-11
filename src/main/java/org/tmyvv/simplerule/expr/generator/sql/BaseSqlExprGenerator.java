@@ -1,12 +1,14 @@
-package org.tmyvv.simplerule.expr.generator;
+package org.tmyvv.simplerule.expr.generator.sql;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
+import org.tmyvv.simplerule.expr.generator.ExprGenerator;
 import org.tmyvv.simplerule.expr.util.FormatUtil;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BaseSqlExprGenerator implements ExprGenerator<String> {
@@ -31,65 +33,65 @@ public class BaseSqlExprGenerator implements ExprGenerator<String> {
 
 
     @Override
-    public String isNull(@NonNull String left, Object value) {
+    public String isNull(@NonNull String left, Object value, Map<String, Object> env) {
         return IS_NULL.format(new Object[]{left});
     }
 
     @Override
-    public String notNull(@NonNull String left, Object value) {
+    public String notNull(@NonNull String left, Object value, Map<String, Object> env) {
         return NOT_NULL.format(new Object[]{left});
     }
 
     @Override
-    public String empty(@NonNull String left, Object value) {
+    public String empty(@NonNull String left, Object value, Map<String, Object> env) {
         return EMPTY.format(new Object[]{left});
     }
 
     @Override
-    public String notEmpty(@NonNull String left, Object value) {
+    public String notEmpty(@NonNull String left, Object value, Map<String, Object> env) {
         return NOT_EMPTY.format(new Object[]{left});
     }
 
     @Override
-    public String eq(@NonNull String left, Object value) {
+    public String eq(@NonNull String left, Object value, Map<String, Object> env) {
         if (value == null) {
-            return isNull(left, value);
+            return isNull(left, value, env);
         } else {
             return EQ.format(new Object[]{left, parseValue(value)});
         }
     }
 
     @Override
-    public String neq(@NonNull String left, Object value) {
+    public String neq(@NonNull String left, Object value, Map<String, Object> env) {
         if (value == null) {
-            return notNull(left, value);
+            return notNull(left, value, env);
         } else {
             return NEQ.format(new Object[]{left, parseValue(value)});
         }
     }
 
     @Override
-    public String gt(@NonNull String left, @NonNull Object value) {
+    public String gt(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         return GT.format(new Object[]{left, parseValue(value)});
     }
 
     @Override
-    public String gte(@NonNull String left, @NonNull Object value) {
+    public String gte(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         return GTE.format(new Object[]{left, parseValue(value)});
     }
 
     @Override
-    public String lt(@NonNull String left, @NonNull Object value) {
+    public String lt(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         return LT.format(new Object[]{left, parseValue(value)});
     }
 
     @Override
-    public String lte(@NonNull String left, @NonNull Object value) {
+    public String lte(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         return LTE.format(new Object[]{left, parseValue(value)});
     }
 
     @Override
-    public String in(@NonNull String left, @NonNull Object value) {
+    public String in(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         String parsedValue = parseValue(value);
         if (!wrappedWithParenthesis(parsedValue)) {
             parsedValue = LEFT_PARENTHESIS + parsedValue + RIGHT_PARENTHESIS;
@@ -98,7 +100,7 @@ public class BaseSqlExprGenerator implements ExprGenerator<String> {
     }
 
     @Override
-    public String notIn(@NonNull String left, @NonNull Object value) {
+    public String notIn(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         String parsedValue = parseValue(value);
         if (!wrappedWithParenthesis(parsedValue)) {
             parsedValue = FormatUtil.PARENTHESIS_FORMAT.format(parsedValue);
@@ -107,7 +109,7 @@ public class BaseSqlExprGenerator implements ExprGenerator<String> {
     }
 
     @Override
-    public String contains(@NonNull String left, @NonNull Object value) {
+    public String contains(@NonNull String left, @NonNull Object value, Map<String, Object> env) {
         return LIKE.format(new Object[]{left, parseValue(value)});
     }
 

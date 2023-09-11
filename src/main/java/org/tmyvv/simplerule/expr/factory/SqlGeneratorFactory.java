@@ -3,9 +3,9 @@ package org.tmyvv.simplerule.expr.factory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.tmyvv.simplerule.expr.enums.DataTypeEnum;
 import org.tmyvv.simplerule.expr.function.ExprFunction;
-import org.tmyvv.simplerule.expr.generator.BaseSqlExprGenerator;
-import org.tmyvv.simplerule.expr.generator.BooleanSqlExprGenerator;
-import org.tmyvv.simplerule.expr.generator.StringSqlExprGenerator;
+import org.tmyvv.simplerule.expr.generator.sql.BaseSqlExprGenerator;
+import org.tmyvv.simplerule.expr.generator.sql.BooleanSqlExprGenerator;
+import org.tmyvv.simplerule.expr.generator.sql.StringSqlExprGenerator;
 import org.tmyvv.simplerule.expr.node.OperationNode;
 import org.tmyvv.simplerule.expr.util.FormatUtil;
 
@@ -23,6 +23,7 @@ public class SqlGeneratorFactory extends AbstractGeneratorFactory<String, BaseSq
     static {
         GENERATOR_MAP.put(DataTypeEnum.BOOL, new BooleanSqlExprGenerator());
         GENERATOR_MAP.put(DataTypeEnum.STRING, new StringSqlExprGenerator());
+        GENERATOR_MAP.put(DataTypeEnum.ENUM, new StringSqlExprGenerator());
     }
 
     @Override

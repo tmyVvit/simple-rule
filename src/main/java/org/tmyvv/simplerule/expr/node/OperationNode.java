@@ -37,9 +37,6 @@ public class OperationNode implements ExprNode {
 
         Matcher m = FUNC_PATTERN.matcher(left);
         if (m.matches()) {
-            if (func != null) {
-                throw new IllegalArgumentException("func is not null when left is function. func: " + func + ", left: " + left);
-            }
             func = m.group("func");
             left = m.group("left");
         }
