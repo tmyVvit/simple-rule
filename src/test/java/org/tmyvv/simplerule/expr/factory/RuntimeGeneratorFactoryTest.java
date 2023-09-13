@@ -1,20 +1,26 @@
 package org.tmyvv.simplerule.expr.factory;
 
+import org.junit.jupiter.api.Test;
 import org.tmyvv.simplerule.expr.enums.DataTypeEnum;
 import org.tmyvv.simplerule.expr.enums.OperationEnum;
 import org.tmyvv.simplerule.expr.enums.RelationEnum;
 import org.tmyvv.simplerule.expr.node.OperationNode;
 import org.tmyvv.simplerule.expr.node.RelationNode;
+import org.tmyvv.simplerule.expr.util.DateUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class RuntimeGeneratorFactoryTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public static void main(String[] args) {
+class RuntimeGeneratorFactoryTest {
+
+    @Test
+    void test1() {
         RuntimeGeneratorFactory factory = RuntimeGeneratorFactory.INSTANCE;
 
         RelationNode rn = new RelationNode();
@@ -34,15 +40,16 @@ public class RuntimeGeneratorFactoryTest {
         node2.setRight("Y");
         node2.setDataType(DataTypeEnum.DATE);
 
-        env.put("tag2", "20230912");
+        env.put("tag2", DateUtil.formatYYYYMMDD(LocalDate.now()));
 
         rn.getExprNodes().add(node);
         rn.getExprNodes().add(node2);
         Supplier<Boolean> supplier = factory.eval(rn, env);
-        System.out.println(supplier.get());
+        assertTrue(supplier.get());
     }
 
-    private void check() {
+    @Test
+    void test2() {
         RelationNode relationNode = new RelationNode();
         relationNode.setRelation(RelationEnum.AND);
 
@@ -85,11 +92,11 @@ public class RuntimeGeneratorFactoryTest {
         env.put("tag2", "value2");
         env.put("tag3", "");
         env.put("tag4", 10);
-        env.put("tag5", "20230912");
+        env.put("tag5", DateUtil.formatYYYYMMDD(LocalDate.now()));
 
 //        String sqlExpr = SqlGeneratorFactory.INSTANCE.eval(relationNode, env);
 //        System.out.println(sqlExpr);
         Supplier<Boolean> expr = RuntimeGeneratorFactory.INSTANCE.eval(relationNode, env);
-        System.out.println(expr.get());
+        assertTrue(expr.get());
     }
 }
